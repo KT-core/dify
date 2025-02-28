@@ -47,6 +47,7 @@ const LocaleLayout = ({
         data-public-site-about={process.env.NEXT_PUBLIC_SITE_ABOUT}
         data-public-text-generation-timeout-ms={process.env.NEXT_PUBLIC_TEXT_GENERATION_TIMEOUT_MS}
         data-public-top-k-max-value={process.env.NEXT_PUBLIC_TOP_K_MAX_VALUE}
+        data-v1-api-prefix={process.env.NEXT_PUBLIC_V1_API_PREFIX}
       >
         <BrowserInitor>
           <SentryInitor>

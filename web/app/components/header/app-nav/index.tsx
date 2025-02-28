@@ -121,7 +121,7 @@ const AppNav = () => {
         activeIcon={<RiRobot2Fill className='w-4 h-4' />}
         text={t('common.menus.apps')}
         activeSegment={['apps', 'app']}
-        link='/apps'
+        link='/apps?category=workflow'
         curNav={appDetail}
         navs={navItems}
         createText={t('common.menus.newApp')}

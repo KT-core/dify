@@ -27,7 +27,6 @@ import SearchBox from '@/app/components/plugins/marketplace/search-box'
 import {
   Plus02,
 } from '@/app/components/base/icons/src/vender/line/general'
-import classNames from '@/utils/classnames'
 
 type NodeSelectorProps = {
   open?: boolean
@@ -44,6 +43,7 @@ type NodeSelectorProps = {
   availableBlocksTypes?: BlockEnum[]
   disabled?: boolean
   noBlocks?: boolean
+  absolute?: boolean
 }
 const NodeSelector: FC<NodeSelectorProps> = ({
   open: openFromProps,
@@ -60,6 +60,7 @@ const NodeSelector: FC<NodeSelectorProps> = ({
   availableBlocksTypes,
   disabled,
   noBlocks = false,
+  absolute = true,
 }) => {
   const { t } = useTranslation()
   const [searchText, setSearchText] = useState('')
@@ -98,9 +99,43 @@ const NodeSelector: FC<NodeSelectorProps> = ({
       return t('workflow.tabs.searchTool')
     return ''
   }, [activeTab, t])
+  const TabContent = () => <div className={`rounded-lg border-[0.5px] border-gray-200 bg-white shadow-lg ${popupClassName}`}>
+    <div className='px-2 pt-2' onClick={e => e.stopPropagation()}>
+      {activeTab === TabsEnum.Blocks && (
+        <Input
+          showLeftIcon
+          showClearIcon
+          autoFocus
+          value={searchText}
+          placeholder={searchPlaceholder}
+          onChange={e => setSearchText(e.target.value)}
+          onClear={() => setSearchText('')}
+        />
+      )}
+      {activeTab === TabsEnum.Tools && (
+        <SearchBox
+          search={searchText}
+          onSearchChange={setSearchText}
+          tags={tags}
+          onTagsChange={setTags}
+          size='small'
+          placeholder={t('plugin.searchTools')!}
+        />
+      )}
 
-  return (
-    <PortalToFollowElem
+    </div>
+    <Tabs
+      activeTab={activeTab}
+      onActiveTabChange={handleActiveTabChange}
+      onSelect={handleSelect}
+      searchText={searchText}
+      tags={tags}
+      availableBlocksTypes={availableBlocksTypes}
+      noBlocks={noBlocks}
+    />
+  </div>
+  return absolute
+    ? <PortalToFollowElem
       placement={placement}
       offset={offset}
       open={open}
@@ -129,44 +164,10 @@ const NodeSelector: FC<NodeSelectorProps> = ({
         }
       </PortalToFollowElemTrigger>
       <PortalToFollowElemContent className='z-[1000]'>
-        <div className={`rounded-lg border-[0.5px] border-gray-200 bg-white shadow-lg ${popupClassName}`}>
-          <div className='px-2 pt-2' onClick={e => e.stopPropagation()}>
-            {activeTab === TabsEnum.Blocks && (
-              <Input
-                showLeftIcon
-                showClearIcon
-                autoFocus
-                value={searchText}
-                placeholder={searchPlaceholder}
-                onChange={e => setSearchText(e.target.value)}
-                onClear={() => setSearchText('')}
-              />
-            )}
-            {activeTab === TabsEnum.Tools && (
-              <SearchBox
-                search={searchText}
-                onSearchChange={setSearchText}
-                tags={tags}
-                onTagsChange={setTags}
-                size='small'
-                placeholder={t('plugin.searchTools')!}
-              />
-            )}
-
-          </div>
-          <Tabs
-            activeTab={activeTab}
-            onActiveTabChange={handleActiveTabChange}
-            onSelect={handleSelect}
-            searchText={searchText}
-            tags={tags}
-            availableBlocksTypes={availableBlocksTypes}
-            noBlocks={noBlocks}
-          />
-        </div>
+        <TabContent/>
       </PortalToFollowElemContent>
     </PortalToFollowElem>
-  )
+    : <TabContent/>
 }
 
 export default memo(NodeSelector)

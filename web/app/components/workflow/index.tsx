@@ -96,6 +96,7 @@ import { useEventEmitterContextContext } from '@/context/event-emitter'
 import Confirm from '@/app/components/base/confirm'
 import { FILE_EXTS } from '@/app/components/base/prompt-editor/constants'
 import { fetchFileUploadConfig } from '@/service/common'
+import OperatorSider from '@/app/components/workflow/operator/sider'
 
 const nodeTypes = {
   [CUSTOM_NODE]: CustomNode,
@@ -443,11 +444,15 @@ const WorkflowWrap = memo(() => {
         nodes={nodesData}
         edges={edgesData} >
         <FeaturesProvider features={initialFeatures}>
-          <Workflow
-            nodes={nodesData}
-            edges={edgesData}
-            viewport={data?.graph.viewport}
-          />
+          <div className='flex h-full'>
+            <OperatorSider />
+            <Workflow
+              nodes={nodesData}
+              edges={edgesData}
+              viewport={data?.graph.viewport}
+            />
+          </div>
+
         </FeaturesProvider>
       </WorkflowHistoryProvider>
     </ReactFlowProvider>
